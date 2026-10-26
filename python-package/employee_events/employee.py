@@ -1,35 +1,36 @@
-"""SQL-backed API for individual employees."""
+"""Employee-specific SQL API."""
 
 from .query_base import QueryBase
 
 
 class Employee(QueryBase):
-    """Access employee labels, events, notes and model inputs."""
+    """Read employee names, performance events, notes and model features."""
 
     name = "employee"
 
     def names(self):
-        """Return (full name, employee ID) for every employee."""
+        """Return (full name, employee ID) pairs sorted by employee name."""
         return self.query("""
-            SELECT first_name || ' ' || last_name AS full_name, employee_id
+            SELECT first_name || ' ' || last_name AS full_name,
+                   employee_id
             FROM employee
-            ORDER BY last_name, first_name, employee_id
+            ORDER BY last_name, first_name
         """)
 
     def username(self, entity_id):
-        """Return the full name for the selected employee."""
+        """Return the chosen employee's full name as a one-row tuple list."""
         return self.query("""
             SELECT first_name || ' ' || last_name AS full_name
             FROM employee
             WHERE employee_id = ?
-        """, (entity_id,))
+        """, (int(entity_id),))
 
     def model_data(self, entity_id):
-        """Return total positive and negative events for the classifier."""
+        """Return the two aggregated event features for the risk model."""
         return self.pandas_query("""
-            SELECT COALESCE(SUM(ee.positive_events), 0) AS positive_events,
-                   COALESCE(SUM(ee.negative_events), 0) AS negative_events
-            FROM employee AS e
-            LEFT JOIN employee_events AS ee USING (employee_id)
-            WHERE e.employee_id = ?
-        """, (entity_id,))
+            SELECT SUM(positive_events) AS positive_events,
+                   SUM(negative_events) AS negative_events
+            FROM employee
+            JOIN employee_events USING (employee_id)
+            WHERE employee.employee_id = ?
+        """, (int(entity_id),))
