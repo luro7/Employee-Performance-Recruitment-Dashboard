@@ -1,7 +1,5 @@
 scikit-learn==1.5.2
-python-fasthtml==0.8.0
-sqlite-minutils==4.0.3
-fastcore==1.7.19
+python-fasthtml==0.14.14
 matplotlib==3.9.2
 scipy==1.14.1
 numpy==2.1.2
