@@ -73,9 +73,9 @@ team_features = teams.model_data(team_choices[0][1])
 
 ## Source files and CI
 
-The original starter database and trained model are **binary files supplied by Udacity**, already copied byte-for-byte into this repository. GitHub Actions verifies the SQLite header, produces `employee_events-0.1.0.tar.gz`, and commits the distribution archive when first built. The CI workflow then runs `pytest` and imports the FastHTML application on every push to `main`.
+The original starter database and trained model are **binary files supplied by Udacity**, already copied byte-for-byte into this repository. The original model, SQLite database, and built `employee_events-0.1.0.tar.gz` source distribution are committed to this repository. GitHub Actions verifies the database, rebuilds and checks the source distribution, runs the test suite, and renders both employee/team views on every push to `main`.
 
-If running a fresh local checkout before those binary files are committed, retrieve the original binary assets from the upstream `python-package/employee_events/employee_events.db` and `assets/model.pkl` paths first.
+A fresh checkout already includes the required binary assets and needs no separate downloads.
 
 ## Interpretation and limitations
 
