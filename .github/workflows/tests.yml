@@ -84,5 +84,15 @@ jobs:
             python-package/dist/employee_events-0.1.0.tar.gz
           if ! git diff --cached --quiet; then
             git commit -m "Preserve Udacity original assets and packaged sdist [skip ci]"
-            git push origin HEAD:main
+            for attempt in 1 2 3; do
+              git fetch origin main
+              git rebase origin/main
+              if git push origin HEAD:main; then
+                break
+              fi
+              if [ "$attempt" = 3 ]; then
+                echo "Could not push built distribution after retries."
+                exit 1
+              fi
+            done
           fi
