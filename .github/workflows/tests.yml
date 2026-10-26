@@ -66,7 +66,12 @@ jobs:
           sys.path.insert(0, "report")
           import dashboard
           assert dashboard.app is not None
-          print("Dashboard imports and initializes successfully.")
+          for model in (dashboard.Employee(), dashboard.Team()):
+            choices = model.names()
+            assert choices, f"No entries found for {model.name}"
+            page = dashboard.report(str(choices[0][1]), model)
+            assert page is not None
+          print("Dashboard imports and both employee/team pages render.")
           PY
 
       - name: Commit built source distribution (first successful run)
