@@ -1,4 +1,4 @@
-name: Test, package, and preserve Udacity starter assets
+name: Test employee dashboard and SQL package
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   test:
@@ -55,6 +55,11 @@ jobs:
           python setup.py sdist --dist-dir dist
           test -f dist/employee_events-0.1.0.tar.gz
 
+      - name: Verify source distribution artifact
+        run: |
+          test -f python-package/dist/employee_events-0.1.0.tar.gz
+          tar -tzf python-package/dist/employee_events-0.1.0.tar.gz | grep -q 'employee_events.db'
+
       - name: Run database and package tests
         run: python -m pytest -q
 
@@ -74,25 +79,3 @@ jobs:
           print("Dashboard imports and both employee/team pages render.")
           PY
 
-      - name: Commit built source distribution (first successful run)
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config user.name "github-actions[bot]"
-          git add -f assets/model.pkl \
-            python-package/employee_events/employee_events.db \
-            python-package/dist/employee_events-0.1.0.tar.gz
-          if ! git diff --cached --quiet; then
-            git commit -m "Preserve Udacity original assets and packaged sdist [skip ci]"
-            for attempt in 1 2 3; do
-              git fetch origin main
-              git rebase origin/main
-              if git push origin HEAD:main; then
-                break
-              fi
-              if [ "$attempt" = 3 ]; then
-                echo "Could not push built distribution after retries."
-                exit 1
-              fi
-            done
-          fi
