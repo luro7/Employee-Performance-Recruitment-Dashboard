@@ -20,7 +20,7 @@ Manufacturing managers need to monitor positive and negative employee performanc
 | Path | Purpose |
 |---|---|
 | `python-package/employee_events/` | Installable SQL package: QueryMixin, QueryBase, Employee, Team and starter SQLite database |
-| `python-package/dist/employee_events-1.0.0.tar.gz` | Built source distribution required by the project rubric |
+| `python-package/dist/employee_events-0.1.0.tar.gz` | Built source distribution required by the project rubric |
 | `report/dashboard.py` | FastHTML app, employee/team routes, widgets, and visualizations |
 | `report/utils.py` | Portable model-loading paths and pickle loader |
 | `report/base_components/` | Original Udacity base UI components, reused via inheritance |
@@ -73,7 +73,7 @@ team_features = teams.model_data(team_choices[0][1])
 
 ## Source files and CI
 
-The original starter database and trained model are **binary files supplied by Udacity**, already copied byte-for-byte into this repository. GitHub Actions verifies the SQLite header, produces `employee_events-1.0.0.tar.gz`, and commits the distribution archive when first built. The CI workflow then runs `pytest` and imports the FastHTML application on every push to `main`.
+The original starter database and trained model are **binary files supplied by Udacity**, already copied byte-for-byte into this repository. GitHub Actions verifies the SQLite header, produces `employee_events-0.1.0.tar.gz`, and commits the distribution archive when first built. The CI workflow then runs `pytest` and imports the FastHTML application on every push to `main`.
 
 If running a fresh local checkout before those binary files are committed, retrieve the original binary assets from the upstream `python-package/employee_events/employee_events.db` and `assets/model.pkl` paths first.
 
