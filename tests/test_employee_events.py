@@ -94,3 +94,18 @@ def test_common_sql_uses_inheritance():
     """Employee and Team share the reusable base query methods."""
     assert issubclass(Employee, QueryBase)
     assert issubclass(Team, QueryBase)
+
+def test_dashboard_renders_employee_and_team():
+    """Generate employee and team views using original SQLite/model assets."""
+    import sys
+
+    from employee_events import Employee, Team
+
+    sys.path.insert(0, str(project_root / "report"))
+    import dashboard
+
+    employee_id = Employee().names()[0][1]
+    team_id = Team().names()[0][1]
+
+    assert dashboard.employee_page(str(employee_id)) is not None
+    assert dashboard.team_page(str(team_id)) is not None
